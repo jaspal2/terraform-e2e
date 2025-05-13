@@ -49,7 +49,7 @@ module "vpc" {
 #}
 
 
-module "vote_service_sg" {
+module "web_server_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
   name        = "user-service"
