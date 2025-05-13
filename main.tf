@@ -44,7 +44,7 @@ module "web_server_sg" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
-  ingress_rules            = [ "ssh-tcp" ]
+ 
 
 }
 
