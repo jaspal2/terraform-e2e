@@ -43,7 +43,7 @@ module "web_server_sg" {
   description = "Security group for web-server with HTTP ports open within VPC"
   vpc_id      = module.vpc.vpc_id
   ingress_cidr_blocks      = ["10.10.0.0/16"]
-  ingress_rules            = ["https-443-tcp"]
+  ingress_rules            = ["https-443-tcp", "http-80-tcp"]
  }
 
 
