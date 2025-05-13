@@ -36,8 +36,8 @@ module "vpc" {
 
 
 # AWS security group module
-#module "web_server_sg" {
-#  source = "terraform-aws-modules/security-group/aws"
+module "web_server_sg" {
+ source = "terraform-aws-modules/security-group/aws"
 
   name        = "vpc_public_SG"
   description = "Security group for web-server with HTTP ports open within VPC"
