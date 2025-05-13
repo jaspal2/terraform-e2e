@@ -44,14 +44,7 @@ module "web_server_sg" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      description = "User-service ports"
-      cidr_blocks = "0.0.0.0/0"
-    }]
+
 }
 
 # AWS aws_launch_template
