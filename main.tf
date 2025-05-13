@@ -14,6 +14,9 @@ data "aws_ami" "ubuntu_ami" {
   }
 }
 
+
+## VPC Module
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -23,22 +26,7 @@ module "vpc" {
   azs                               = ["ap-southeast-2a", "ap-southeast-2b"]
   private_subnets                   = ["10.0.0.0/28", "10.0.0.16/28"]
   public_subnets                    = ["10.0.0.32/28", "10.0.0.64/28"]
-  default_security_group_name       =  "public_sg1"
-  default_security_group_ingress    = [
-    {
-      description = "Allow HTTP"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      description = "Allow HTTPS"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }]
+  
   create_igw      = true  
   tags = {
     Terraform = "true"
@@ -46,6 +34,29 @@ module "vpc" {
   }
 }
 
+
+# AWS security group module
+module "web_server_sg" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "vpc_public_SG"
+  description = "Security group for web-server with HTTP ports open within VPC"
+  vpc_id      = module.vpc.id
+
+  ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 65535
+      protocol    = "tcp"
+      description = "User-service ports"
+      cidr_blocks = "0.0.0.0/0"
+    }]
+
+}
+
+
+# AWS aws_launch_template
 
 resource "aws_launch_template" "ec2_template" {
   name = "ec2_template_ubuntu"
@@ -66,7 +77,7 @@ resource "aws_launch_template" "ec2_template" {
     availability_zone = "us-west-2a"
   }
 
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  vpc_security_group_ids = [module.vpc.vpc_security_group_ids]
 
   tag_specifications {
     resource_type = "instance"
