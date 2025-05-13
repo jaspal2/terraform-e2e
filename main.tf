@@ -41,7 +41,7 @@ module "web_server_sg" {
 
   name        = "vpc_public_SG"
   description = "Security group for web-server with HTTP ports open within VPC"
-  vpc_id      = module.vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
   ingress_with_cidr_blocks = [
@@ -52,9 +52,7 @@ module "web_server_sg" {
       description = "User-service ports"
       cidr_blocks = "0.0.0.0/0"
     }]
-
 }
-
 
 # AWS aws_launch_template
 
@@ -73,11 +71,7 @@ resource "aws_launch_template" "ec2_template" {
 
   instance_type = "t2.micro"
 
-  placement {
-    availability_zone = "us-west-2a"
-  }
-
-  vpc_security_group_ids = [module.vpc.vpc_security_group_ids]
+  vpc_security_group_ids = [module.web_server_sg.security_group_id]
 
   tag_specifications {
     resource_type = "instance"
