@@ -36,16 +36,37 @@ module "vpc" {
 
 
 # AWS security group module
-module "web_server_sg" {
-  source = "terraform-aws-modules/security-group/aws"
+#module "web_server_sg" {
+#  source = "terraform-aws-modules/security-group/aws"
 
-  name        = "vpc_public_SG"
-  description = "Security group for web-server with HTTP ports open within VPC"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
+#  name        = "vpc_public_SG"
+#  description = "Security group for web-server with HTTP ports open within VPC"
+#  vpc_id      = module.vpc.vpc_id
+#
+#  ingress_rules            = ["https-443-tcp", "http-80-tcp", "ssh-tcp"]
  
 
+#}
+
+
+module "vote_service_sg" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "user-service"
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks      = ["10.10.0.0/16"]
+  ingress_rules            = ["https-443-tcp"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 8080
+      to_port     = 8090
+      protocol    = "tcp"
+      description = "User-service ports"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
 }
 
 # AWS aws_launch_template
