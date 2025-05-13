@@ -51,7 +51,7 @@ module "web_server_sg" {
       protocol    = "tcp"
       description = "ssh port"
       cidr_blocks = "0.0.0.0/0"
-    }
+    }]
  }
 
 
