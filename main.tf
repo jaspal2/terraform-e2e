@@ -81,5 +81,38 @@ resource "aws_launch_template" "ec2_template" {
       Name = "test"
     }
   }
+}
+
+# Autoscaling group
+module "asg" {
+  source  = "terraform-aws-modules/autoscaling/aws"
+
+  # Autoscaling group
+  name = "asg_terraform"
+
+  min_size                  = 0
+  max_size                  = 1
+  desired_capacity          = 1
+  wait_for_capacity_timeout = 0
+  health_check_type         = "EC2"
+  vpc_zone_identifier       = [module.vpc.public_subnets]
+
+ 
+  instance_refresh = {
+    strategy = "Rolling"
+    preferences = {
+      checkpoint_delay       = 600
+      checkpoint_percentages = [35, 70, 100]
+      instance_warmup        = 300
+      min_healthy_percentage = 50
+      max_healthy_percentage = 100
+    }
+    triggers = ["tag"]
+  }
+
+  # Launch template
+   create_launch_template = false
+   launch_template        = aws_launch_template.ec2_template.name
+
 
 }
