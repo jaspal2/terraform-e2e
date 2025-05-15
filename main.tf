@@ -89,7 +89,6 @@ module "asg" {
   max_size            = 3
   min_size            = 1
 
-  use_launch_template = true
 
     launch_template_id   = aws_launch_template.terraform_template.id
      launch_template_version          = "$Latest"
