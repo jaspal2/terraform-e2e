@@ -83,19 +83,4 @@ module "asg" {
     triggers = ["tag"]
   }
 
-  # Launch template
-  launch_template_name        = "new-template"
-  launch_template_description = "Launch template example"
-  update_default_version      = true
-
-  image_id          = "data.aws_ami.id"
-  instance_type     = "t3.micro"
-  enable_monitoring = true
-
-  
-  tags = {
-    Environment = "dev"
-    Project     = "megasecret"
-  }
-}
-
+ 
