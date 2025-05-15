@@ -92,25 +92,7 @@ module "asg" {
   instance_type     = "t3.micro"
   enable_monitoring = true
 
-  block_device_mappings = [
-    {
-      # Root volume
-      device_name = "/dev/xvda"
-      no_device   = 0
-      ebs = {
-        delete_on_termination = true
-        encrypted             = true
-        volume_size           = 20
-        volume_type           = "gp2"
-      }
-    }
-  ]
-  cpu_options = {
-    core_count       = 1
-    threads_per_core = 1
-  }
-
- 
+  
   tags = {
     Environment = "dev"
     Project     = "megasecret"
