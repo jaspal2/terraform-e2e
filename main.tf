@@ -55,10 +55,8 @@ module "web_server_sg" {
  }
 
 
-# AWS aws_launch_template
-
-resource "aws_launch_template" "ec2_template" {
-  name = "ec2_template_ubuntu"
+resource "aws_launch_template" "foo" {
+  name = "foo"
 
   block_device_mappings {
     device_name = "/dev/sdf"
@@ -68,9 +66,27 @@ resource "aws_launch_template" "ec2_template" {
     }
   }
 
+
+  cpu_options {
+    core_count       = 4
+    threads_per_core = 2
+  }
+
+  credit_specification {
+    cpu_credits = "standard"
+  }
+
+
   image_id = data.aws_ami.ubuntu_ami.id
 
+  instance_initiated_shutdown_behavior = "terminate"
+
   instance_type = "t2.micro"
+
+  kernel_id = "test"
+
+  key_name = "test"
+
 
   vpc_security_group_ids = [module.web_server_sg.security_group_id]
 
@@ -81,6 +97,7 @@ resource "aws_launch_template" "ec2_template" {
       Name = "test"
     }
   }
+
 }
 
 
