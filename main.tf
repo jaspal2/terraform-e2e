@@ -55,7 +55,7 @@ module "web_server_sg" {
  }
 
 
-resource "aws_launch_template" "foo" {
+resource "aws_launch_template" "ec2_template" {
   name = "foo"
 
   block_device_mappings {
