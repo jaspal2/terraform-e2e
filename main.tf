@@ -80,7 +80,7 @@ resource "aws_launch_template" "terraform_template" {
 
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "~> 7.3" # use latest version compatible with your setup
+  version = "~> 5.0" # use latest version compatible with your setup
 
   name = "terraform-asg-module"
 
