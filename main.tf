@@ -91,8 +91,8 @@ module "asg" {
 
   use_launch_template = true
 
-     id      = aws_launch_template.terraform_template.id
-  launch_template_version          = "$Latest"
+    launch_template_id   = aws_launch_template.terraform_template.id
+     launch_template_version          = "$Latest"
 
   health_check_type         = "EC2"
   health_check_grace_period = 300
