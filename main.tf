@@ -64,7 +64,7 @@ resource "aws_launch_template" "terraform_template" {
       volume_size = 20
     }
   }
-  image_id = "data.aws_ami.ubuntu_ami.id"
+  image_id = data.aws_ami.ubuntu_ami.id
 
   vpc_security_group_ids = [module.web_server_sg.security_group_id]
 
