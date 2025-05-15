@@ -106,6 +106,6 @@ module "asg" {
 
   # Launch template
     create_launch_template = false
-  launch_template        = aws_launch_template.terraform_template.name
+    launch_template_id       = aws_launch_template.terraform_template.id
 }
 
