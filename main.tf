@@ -97,11 +97,5 @@ module "asg" {
   health_check_grace_period = 300
   wait_for_capacity_timeout = "0"
 
-  tags = [
-    {
-      key                 = "Name"
-      value               = "asg-instance"
-      propagate_at_launch = true
-    }
-  ]
+
 }
