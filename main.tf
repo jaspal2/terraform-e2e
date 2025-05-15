@@ -81,6 +81,7 @@ resource "aws_launch_template" "terraform_template" {
 module "asg" {
 
   name = "terraform-asg-module"
+  source = "../asg-module/terraform-aws-autoscaling"
 
   vpc_zone_identifier = ["subnet-020435553a8d8a35b"]  # Replace with your subnet IDs
   desired_capacity    = 2
