@@ -80,32 +80,29 @@ resource "aws_launch_template" "terraform_template" {
 
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
+  version = "~> 7.0" # use latest version compatible with your setup
 
-  # Autoscaling group
-  name = "terraform-asg"
+  name = "terraform-asg-module"
 
-  min_size                  = 0
-  max_size                  = 1
-  desired_capacity          = 1
-  wait_for_capacity_timeout = 0
+  vpc_zone_identifier = ["subnet-020435553a8d8a35b"]  # Replace with your subnet IDs
+  desired_capacity    = 2
+  max_size            = 3
+  min_size            = 1
+
+  use_launch_template = true
+
+  launch_template_name = aws_launch_template.terraform_template.name
+  launch_template_version = "$Latest"
+
   health_check_type         = "EC2"
-  vpc_zone_identifier       = [ "subnet-0dbb9b17257fb279f"]
+  health_check_grace_period = 300
+  wait_for_capacity_timeout = "0"
 
-  
-  instance_refresh = {
-    strategy = "Rolling"
-    preferences = {
-      checkpoint_delay       = 600
-      checkpoint_percentages = [35, 70, 100]
-      instance_warmup        = 300
-      min_healthy_percentage = 50
-      max_healthy_percentage = 100
+  tags = [
+    {
+      key                 = "Name"
+      value               = "asg-instance"
+      propagate_at_launch = true
     }
-    triggers = ["tag"]
-  }
-
-  # Launch template
-    create_launch_template = false
-    launch_template_id       = aws_launch_template.terraform_template.id
+  ]
 }
-
