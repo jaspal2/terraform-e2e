@@ -17,7 +17,7 @@ data "aws_ami" "ubuntu_ami" {
 
 module "vpc" {
 
-  source = "./vpc"
+  source = "../vpc"
 }
 
 
