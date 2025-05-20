@@ -23,7 +23,7 @@ module "vpc" {
 
 
 resource "aws_launch_template" "terraform_template" {
-  name = "terrafomr_template"
+  name = "terraform_template"
   instance_type = "t2.micro"
 
   block_device_mappings {
