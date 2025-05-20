@@ -1,3 +1,26 @@
+data "aws_ami" "ubuntu_ami" {
+  most_recent      = true
+  owners           = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20250305"]
+  }
+
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+
+module "vpc" {
+
+  source = "./vpc"
+}
+
+
 
 resource "aws_launch_template" "terraform_template" {
   name = "terrafomr_template"
@@ -11,7 +34,7 @@ resource "aws_launch_template" "terraform_template" {
   }
   image_id = data.aws_ami.ubuntu_ami.id
 
-  vpc_security_group_ids = [module.web_server_sg.security_group_id]
+  vpc_security_group_ids = [module.vpc.security_group_id]
 
   tag_specifications {
     resource_type = "instance"
