@@ -9,7 +9,7 @@ module "create_ASG" {
   create_launch_template = false
   launch_template_id        = module.launch_template.launch_template_id
   min_size = 0
-  max_size = 0
+  max_size = 1
   desired_capacity          = 1
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
