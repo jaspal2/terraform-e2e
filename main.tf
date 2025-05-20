@@ -8,9 +8,9 @@ module "create_ASG" {
   name = "Terrafomr_asg"
   create_launch_template = false
   launch_template_id        = module.launch_template.launch_template_id
-  min_size = 0
-  max_size = 1
-  desired_capacity          = 1
+  min_size = 1
+  max_size = 2
+  desired_capacity          = 2
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
   vpc_zone_identifier       = module.launch_template.public_subnets
