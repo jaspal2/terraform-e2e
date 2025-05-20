@@ -13,7 +13,7 @@ module "create_ASG" {
   desired_capacity          = 1
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
-  vpc_zone_identifier       = [module.launch_template.public_subnets]
+  vpc_zone_identifier       = module.launch_template.public_subnets
 
     instance_refresh = {
     strategy = "Rolling"
