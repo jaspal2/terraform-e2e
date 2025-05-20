@@ -27,3 +27,54 @@ module "create_ASG" {
     triggers = ["tag"]
   }
 }
+
+
+
+
+module "alb" {
+  source = "terraform-aws-modules/alb/aws"
+
+  name    = "alb-terraform"
+  vpc_id  = "module.launch_template.vpc_id"
+  subnets =module.launch_template.public_subnets
+
+  create_security_group = False
+  security_groups       = module.launch_template.security_group_id
+  subnets               = module.launch_template.public_subnets 
+
+  listeners = {
+    ex-http-https-redirect = {
+      port     = 80
+      protocol = "HTTP"
+      redirect = {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
+      }
+    }
+    ex-https = {
+      port            = 443
+      protocol        = "HTTPS"
+      certificate_arn = "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012"
+
+      forward = {
+        target_group_key = "ex-instance"
+      }
+    }
+  }
+
+  target_groups = {
+    ex-instance = {
+      name_prefix      = "h1"
+      protocol         = "HTTP"
+      port             = 80
+      target_type      = "instance"
+      target_id        = "i-0f6d38a07d50d080f"
+    }
+  }
+
+  tags = {
+    Environment = "Development"
+    Project     = "Example"
+  }
+}
