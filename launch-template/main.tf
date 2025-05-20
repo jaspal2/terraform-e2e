@@ -24,6 +24,7 @@ module "vpc" {
 
 resource "aws_launch_template" "terraform_template" {
   name = "terrafomr_template"
+  instance_type = "t2.micro"
 
   block_device_mappings {
     device_name = "/dev/sdf"
