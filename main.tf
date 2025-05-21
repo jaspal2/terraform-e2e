@@ -35,8 +35,7 @@ module "alb" {
   source = "terraform-aws-modules/alb/aws"
 
   name    = "alb-terraform"
-  vpc_id  = "module.launch_template.vpc_id"
-  subnets =module.launch_template.public_subnets
+  vpc_id  = module.launch_template.vpc_id
 
   create_security_group = False
   security_groups       = module.launch_template.security_group_id
@@ -67,9 +66,8 @@ module "alb" {
     ex-instance = {
       name_prefix      = "h1"
       protocol         = "HTTP"
-      port             = 80
+      port             = 80a
       target_type      = "instance"
-      target_id        = "i-0f6d38a07d50d080f"
     }
   }
 
@@ -77,4 +75,10 @@ module "alb" {
     Environment = "Development"
     Project     = "Example"
   }
+}
+
+
+resource "aws_autoscaling_attachment" "asg_attachment" {
+  autoscaling_group_name = module.create_ASG.autoscaling_group_name
+  lb_target_group_arn    = module.alb.target_group_arns["ex-instance"]
 }
