@@ -80,5 +80,5 @@ module "alb" {
 
 resource "aws_autoscaling_attachment" "asg_attachment" {
   autoscaling_group_name = module.create_ASG.autoscaling_group_name
-  lb_target_group_arn    = module.alb.target_group_arns["ex-instance"]
+  lb_target_group_arn    = module.alb.target_groups["ex-instance"].arn
 }
