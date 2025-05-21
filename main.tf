@@ -38,7 +38,7 @@ module "alb" {
   vpc_id  = module.launch_template.vpc_id
 
   create_security_group = false
-  security_groups       = module.launch_template.security_group_id
+  security_groups       = [module.launch_template.security_group_id]
   subnets               = module.launch_template.public_subnets 
 
   listeners = {
@@ -78,7 +78,3 @@ module "alb" {
 }
 
 
-resource "aws_autoscaling_attachment" "asg_attachment" {
-  autoscaling_group_name = module.create_ASG.autoscaling_group_name
-  lb_target_group_arn    = module.alb.target_groups["ex-instance"].arn
-}
