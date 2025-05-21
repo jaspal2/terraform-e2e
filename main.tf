@@ -79,53 +79,6 @@ module "alb" {
 }
 
 
-module "alb" {
-  source = "terraform-aws-modules/alb/aws"
-
-  name    = "alb-terraform"
-  vpc_id  = module.launch_template.vpc_id
-
-  create_security_group = false
-  security_groups       = [module.launch_template.security_group_id]
-  subnets               = module.launch_template.public_subnets 
-
-  listeners = {
-    ex-http-https-redirect = {
-      port     = 80
-      protocol = "HTTP"
-      redirect = {
-        port        = "443"
-        protocol    = "HTTPS"
-        status_code = "HTTP_301"
-      }
-    }
-    ex-https = {
-      port            = 443
-      protocol        = "HTTPS"
-      certificate_arn = "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012"
-
-      forward = {
-        target_group_key = "ex-instance"
-      }
-    }
-  }
-
-  target_groups = {
-    ex-instance = {
-      name_prefix      = "h1"
-      protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
-      # Remove any attempts at target attachment within the module
-      create_attachment = false # This may be needed depending on module version
-    }
-  }
-
-  tags = {
-    Environment = "Development"
-    Project     = "Example"
-  }
-}
 
 # Then create a separate attachment resource
 resource "aws_autoscaling_attachment" "asg_attachment" {
