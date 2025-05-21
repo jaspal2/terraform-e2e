@@ -11,6 +11,6 @@ output "vpc_id" {
     value = "module.vpc_id"
 }
 
-output "secuiry_group" {
+output "security_group_id" {
     value = "module.vpc.security_group_id"
 }

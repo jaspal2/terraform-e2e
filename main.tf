@@ -37,7 +37,7 @@ module "alb" {
   name    = "alb-terraform"
   vpc_id  = module.launch_template.vpc_id
 
-  create_security_group = False
+  create_security_group = false
   security_groups       = module.launch_template.security_group_id
   subnets               = module.launch_template.public_subnets 
 
