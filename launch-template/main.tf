@@ -45,4 +45,6 @@ resource "aws_launch_template" "terraform_template" {
     }
   }
 
+  user_data = filebase64("./nginx.sh")
+
 }
